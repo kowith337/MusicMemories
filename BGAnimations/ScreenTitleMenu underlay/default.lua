@@ -1,0 +1,19 @@
+
+RPC_Update({details = "Main Menu",
+large_image = "outfox",large_text = "Stepmania 5.3",
+small_image = GAMESTATE:GetCurrentGame():GetName() , small_text = GAMESTATE:GetCurrentGame():GetName()})
+
+return Def.ActorFrame {
+	OnCommand=function(self)
+		GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
+		GAMESTATE:UpdateDiscordScreenInfo("Title Menus","",1)
+	end;
+	Def.Quad {
+		InitCommand=cmd(horizalign,left;vertalign,top;y,SCREEN_TOP+8);
+		OnCommand=cmd(diffuse,Color.Black;diffusealpha,0.5;zoomto,256,84;faderight,1);
+	};
+	Def.Quad {
+		InitCommand=cmd(horizalign,right;vertalign,top;x,SCREEN_RIGHT;y,SCREEN_TOP+8);
+		OnCommand=cmd(diffuse,Color.Black;diffusealpha,0.5;zoomto,256,46;fadeleft,1);
+	};
+};
