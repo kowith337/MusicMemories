@@ -26,7 +26,7 @@ local t = Def.ActorFrame{
 		};
 	};
 
-	Def.Sprite {
+	--[[Def.Sprite {
 		InitCommand=cmd(x,0;y,0;diffusealpha,0.8);
 		CurrentSongChangedMessageCommand=cmd(finishtweening;sleep,0.32;queuecommand,"ModifySongBackground");
 		ModifySongBackgroundCommand=function(self)
