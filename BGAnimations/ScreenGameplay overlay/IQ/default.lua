@@ -15,19 +15,31 @@
 		6SPEED
 ]]
 
+local GT = GAMESTATE:GetCurrentGame():GetName();
+local InB = {"Left","Down","Up","Right"}
+if GT == 'dance' then
+	InB = {"Left","Down","Up","Right"}
+elseif GT == 'pump' then
+	InB = {"DownLeft","UpLeft","Center","UpRight","DownRight"}
+else
+	return Def.ActorFrame{};
+end
+
+
 local PICLIST = {9,5,30};
 local path;
 local PlayerCan;
 if GAMESTATE:IsCourseMode() then
-	if GAMESTATE:GetCurrentCourse():GetCourseEntry(0):GetSong() then
-		path=GAMESTATE:GetCurrentCourse():GetCourseEntry(0):GetSong():GetSongDir();
+	if GAMESTATE:GetCurrentCourse():IsEndless() then
+		return Def.ActorFrame{};
 	end
+path=GAMESTATE:GetCurrentCourse():GetCourseEntry(0):GetSong():GetSongDir();
 else
 path=GAMESTATE:GetCurrentSong():GetSongDir();
 end
 if path == nil then return Def.ActorFrame{}; end
 	if FILEMAN:DoesFileExist(path.."BrainIQ.lua") then
-		LoadActor("../../../../../"..path.."BrainIQ");
+		LoadActor(path.."BrainIQ.lua");
 		PlayerCan = IQ_Condition();
 		if PlayerCan[1] == false and PlayerCan[2] == false then return Def.ActorFrame{}; end
 	else
@@ -39,7 +51,6 @@ SCREENMAN:SystemMessage('There are '..#IQBrain);
 local t = Def.ActorFrame{};
 
 local wai = 115;
-local InB = {"Left","Down","Up","Right"}
 local coll = #InB;
 local Nown = 1;
 local Nowi = "IDK";

@@ -11,28 +11,33 @@ local function NameString(str)
 	return THEME:GetString('ScreenGameplay',str)
 end
 
+local function StrUti(str)
+	return THEME:GetString('RageUtil',"Num"..string.upper( string.sub(str,1,1) )..string.lower( string.sub(str,2,2) )) or str
+end;
+
+
 local function NumtoST(n)
 if math.mod(n,100) <= 10 then
 	if math.mod(n,10) == 1 then
-		return n.."st"
+		return n..StrUti("st")
 	elseif math.mod(n,10) == 2 then
-		return n.."nd"
+		return n..StrUti("nd")
 	elseif math.mod(n,10) == 3 then
-		return n.."rd"
+		return n..StrUti("rd")
 	else
-		return n.."th"
+		return n..StrUti("th")
 	end
 elseif math.mod(n,100) <= 20 then
-	return n.."th"
+	return n..StrUti("th")
 else
 	if math.mod(n,10) == 1 then
-		return n.."st"
+		return n..StrUti("st")
 	elseif math.mod(n,10) == 2 then
-		return n.."nd"
+		return n..StrUti("nd")
 	elseif math.mod(n,10) == 3 then
-		return n.."rd"
+		return n..StrUti("rd")
 	else
-		return n.."th"
+		return n..StrUti("th")
 	end
 end
 end;

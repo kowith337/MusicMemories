@@ -131,7 +131,7 @@ t[#t+1] = LoadFont("Common Normal") .. {
 		local player = GAMESTATE:GetMasterPlayerNumber()
 		local title = PREFSMAN:GetPreference("ShowNativeLanguage") and GAMESTATE:GetCurrentSong():GetDisplayMainTitle() or GAMESTATE:GetCurrentSong():GetTranslitFullTitle()
 		local songname = title .. " - " .. GAMESTATE:GetCurrentSong():GetGroupName()
-		local status = "Playing Song"
+		local status = THEME:GetString('DiscordRich',"State_PlaySong")
 		GAMESTATE:UpdateDiscordProfile(GAMESTATE:GetPlayerDisplayName(player))
 		GAMESTATE:UpdateDiscordSongPlaying(status,songname,GAMESTATE:GetCurrentSong():GetLastSecond())
 		

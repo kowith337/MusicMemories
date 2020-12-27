@@ -1,7 +1,7 @@
 local TS;
 
 local MaxBorder = SCREEN_RIGHT;
-local lastnote = 0;
+local lastnote = -99999;
 local BOOMStage = false;
 
 
@@ -123,6 +123,8 @@ local function GetCh(x)
             elseif fileT == "sm" then
                 -- SM FILE
                 -- Loop through each chart in the SM file
+
+
                 for chart in STUFF:gmatch("#NOTES[^;]*") do
                     -- split the entire chart string into pieces on ":"
                     local pieces = {}
@@ -139,13 +141,17 @@ local function GetCh(x)
                     local st = pieces[2]:gsub("[^%w-]", "")
                     local diff = pieces[4]:gsub("[^%w]", "")
                     local DLC=true;
+                    
                     if dif == "Edit" then
-                        DLC = ((pieces[3]:gsub("[^%w]", ""))==des)
+                        
+                        DLC = ((pieces[3]:gsub("[^%w]", ""))==des:gsub("[^%w]", ""))
                     end
                     
                     -- if this particular chart's steps_type matches the desired StepsType
                     -- and its difficulty string matches the desired Difficulty
+
                     if (st == stepkwa) and (diff == dif) and DLC then
+                        
                         -- then index 7 contains the notedata that we're looking for
                         -- use gsub to remove comments, store the resulting string,
                         -- and break out of the chart loop now
@@ -153,6 +159,7 @@ local function GetCh(x)
                         break
                     end
                 end
+
 
 
                 local AI = 1;
@@ -486,11 +493,16 @@ local t = Def.ActorFrame{
             
 
         end
-        printf("Ver %d :3",#Vers)
         this["VertexLife"]:SetNumVertices(#Vers):SetVertices( Vers )
         N_Tile = 1;
 
-        lastnote = math.min(lastnote,GAMESTATE:GetCurrentSong():GetLastSecond())
+        if lastnote == -99999 then
+            lastnote = GAMESTATE:GetCurrentSong():GetLastSecond()
+        else
+            lastnote = math.min(lastnote,GAMESTATE:GetCurrentSong():GetLastSecond())
+        end
+
+        
         
         local xt = function(self)
             CurSec = GAMESTATE:GetCurMusicSeconds()
@@ -537,11 +549,13 @@ local t = Def.ActorFrame{
                     end
                     
                     local CCL = {1,1,1,1}
-
-                    if GL >= 0.5 then
-                        CCL = ScaleColor(GL,0.5,1,Color.Yellow or {1,1,0,1},Color.Green or {0,1,0,1})
+                    
+                    if GL >= 2/3 then
+                        CCL = ScaleColor(GL,2/3,1,Color.Green or {0,1,0,1},Color.SkyBlue or {0.5,0.5,1,1})
+                    elseif GL >= 1/3 then
+                        CCL = ScaleColor(GL,1/3,2/3,Color.Yellow or {1,1,0,1},Color.Green or {0,1,0,1})
                     else
-                        CCL = ScaleColor(GL,0,0.5,Color.Red or {1,0,0,1},Color.Yellow or {1,1,0,1})
+                        CCL = ScaleColor(GL,0,1/3,Color.Red or {1,0,0,1},Color.Yellow or {1,1,0,1})
                     end
 
                     this["VertexLife"]:SetVertex((N_Tile-1)*6+1,

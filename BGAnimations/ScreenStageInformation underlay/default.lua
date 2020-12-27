@@ -13,7 +13,6 @@ local t = Def.ActorFrame{};
 	};
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(Center;zoom,1;rotationz,0;);
-		OnCommand=cmd(decelerate,4.3;zoom,1.1;rotationx,5);
 		Def.Sprite {
 			InitCommand=cmd(diffusealpha,0);
 			BeginCommand=cmd(LoadFromCurrentSongBackground);
@@ -28,19 +27,44 @@ local t = Def.ActorFrame{};
 			end;
 		};
 	}
+	t[#t+1]=Def.Quad{
+		InitCommand=cmd(FullScreen;diffuse,{1,1,1,0});
+		OnCommand=cmd(sleep,2.2;diffusealpha,1);
+	};
+	t[#t+1]=LoadActor("BlurBG.lua")..{
+		InitCommand=cmd(visible,false;Center);
+		OnCommand=cmd(sleep,2.2;queuecommand,"app");
+		appCommand=cmd(visible,true;linear,3.8;zoom,1.1;rotationz,1);
+	};
 	 
-for i = 1, 20 do
-	t[#t+1]=Def.ActorFrame{
-		InitCommand=cmd(diffusealpha,1;zoom,0.2;x,math.random( 0, SCREEN_RIGHT );y,math.random( 0, SCREEN_BOTTOM ));
-		OnCommand=cmd(playcommand,"SPIN");
-		SPINCommand=cmd(linear,0.4+math.random(0,3)/5;addx,math.random(-20,20);addy,math.random(-20,20);sleep,0.02;queuecommand,"SPIN");
-		LoadActor("Aura")..{
-			InitCommand=cmd(diffusealpha,0);
-			OnCommand=cmd(sleep,math.random(0,5)/5;decelerate,1.5;diffusealpha,0.4;sleep,math.random(0,10)/4;decelerate,1.5;diffusealpha,0;zoom,0.5);
+	t[#t+1] = Def.ActorFrame{
+		InitCommand=cmd(zoom,1.2;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-100;visible,false);
+		OnCommand=cmd(sleep,2.2;queuecommand,"app");
+		appCommand=cmd(visible,true;decelerate,2.5;y,SCREEN_CENTER_Y-70;diffusealpha,1);
+		--Song Banner
+
+		
+		Def.Sprite{
+			OnCommand=function(self)
+			
+			if GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse():HasBanner() then
+			self:Load(GAMESTATE:GetCurrentCourse():GetBannerPath())
+			elseif GAMESTATE:GetCurrentSong():HasBanner() then
+			self:Load(GAMESTATE:GetCurrentSong():GetBannerPath()):scaletoclipped(256,80)
+			else
+			self:Load(THEMEDIR().."/Graphics/Common fallback banner.png"):scaletoclipped(256,80)
+			end
+			end;
 		};
-	}
+		LoadActor(THEME:GetPathG("ScreenSelectMusic","BannerFrame"))..{
+			OnCommand=cmd();
+		};
 	
-end
+	
+	
+	};
+
+
 	t[#t+1]=LoadActor("Introduc2.wav")..{
 		OnCommand=cmd(sleep,0.2;queuecommand,"YEP");
 		YEPCommand=cmd(play);
@@ -48,6 +72,11 @@ end
 
 --Title Stuff HERE
 	t[#t+1]=LoadActor("Title.lua");
+
+	t[#t+1]=Def.Quad{
+		InitCommand=cmd(FullScreen;diffuse,{1,1,1,0});
+		OnCommand=cmd(sleep,1;accelerate,1.2;diffusealpha,1;decelerate,2;diffusealpha,0);
+	};
 
 	t[#t+1]=Def.Quad{
 		InitCommand=cmd(FullScreen;diffuse,{0,0,0,0});

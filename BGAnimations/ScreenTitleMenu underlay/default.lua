@@ -6,8 +6,8 @@ small_image = GAMESTATE:GetCurrentGame():GetName() , small_text = GAMESTATE:GetC
 return Def.ActorFrame {
 	OnCommand=function(self)
 		GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
-		GAMESTATE:UpdateDiscordScreenInfo("Title Menus","",1)
-	end;
+		GAMESTATE:UpdateDiscordScreenInfo(THEME:GetString('DiscordRich',"Title_Menus") or "Title Menus",Var "LoadingScreen",1)
+	end;	
 	Def.Quad {
 		InitCommand=cmd(horizalign,left;vertalign,top;y,SCREEN_TOP+8);
 		OnCommand=cmd(diffuse,Color.Black;diffusealpha,0.5;zoomto,256,84;faderight,1);

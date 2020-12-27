@@ -13,31 +13,39 @@ Sub = GAMESTATE:IsCourseMode() and ToEnumShortString( GAMESTATE:GetCurrentCourse
 
 if GAMESTATE:IsCourseMode() then
 if GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-Time = (GAMESTATE:GetCurrentCourse():GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_1):GetStepsType())+GAMESTATE:GetCurrentCourse():GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_2):GetStepsType()))/2;
-elseif GAMESTATE:IsPlayerEnabled(PLAYER_1) then
-Time = GAMESTATE:GetCurrentCourse():GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_1):GetStepsType())
-elseif GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-Time = GAMESTATE:GetCurrentCourse():GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_2):GetStepsType())
-end
+	
+	if GAMESTATE:GetCurrentCourse():GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_1):GetStepsType()) == nil then
+		Time = nil
+	else	
+		Time = ((GAMESTATE:GetCurrentCourse():GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_1):GetStepsType()) or 99999)
+		+(GAMESTATE:GetCurrentCourse():GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_2):GetStepsType()) or 99999)
+		)/2;
+	end
+	elseif GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+	Time = GAMESTATE:GetCurrentCourse():GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_1):GetStepsType())
+	elseif GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+	Time = GAMESTATE:GetCurrentCourse():GetTotalSeconds(GAMESTATE:GetCurrentTrail(PLAYER_2):GetStepsType())
+	end
 else
-Time = GAMESTATE:GetCurrentSong():MusicLengthSeconds();
+	Time = GAMESTATE:GetCurrentSong():MusicLengthSeconds();
 end
 
 See = color("#FF8800")
-local SE;
-SE = "";
+local SE = {};
 if Title == "" then
-SE = SE.."No Title\n"
+	SE[#SE+1] = "No Title"
 else
-SE = SE..Title.."\n"
+	SE[#SE+1] = Title..""
 end
+
 if Sub ~= "" then
-SE = SE..Sub.."\n"
+	SE[#SE+1] = Sub..""
 end
+
 if Time then
-SE = SE..SecondsToMSSMsMs(Time)
+	SE[#SE+1] = SecondsToMSSMsMs(Time)
 else
-SE = SE.."??:??.??"
+	SE[#SE+1] = "??:??.??"
 end
 
 
@@ -51,28 +59,33 @@ local See2;
 See2 = color("#22FFAA")
 
 
+local function StrUti(str)
+	return THEME:GetString('RageUtil',"Num"..string.upper( string.sub(str,1,1) )..string.lower( string.sub(str,2,2) )) or str
+end;
+
+
 local function NumtoST(n)
 if math.mod(n,100) <= 10 then
 	if math.mod(n,10) == 1 then
-		return n.."st"
+		return n..StrUti("st")
 	elseif math.mod(n,10) == 2 then
-		return n.."nd"
+		return n..StrUti("nd")
 	elseif math.mod(n,10) == 3 then
-		return n.."rd"
+		return n..StrUti("rd")
 	else
-		return n.."th"
+		return n..StrUti("th")
 	end
 elseif math.mod(n,100) <= 20 then
-	return n.."th"
+	return n..StrUti("th")
 else
 	if math.mod(n,10) == 1 then
-		return n.."st"
+		return n..StrUti("st")
 	elseif math.mod(n,10) == 2 then
-		return n.."nd"
+		return n..StrUti("nd")
 	elseif math.mod(n,10) == 3 then
-		return n.."rd"
+		return n..StrUti("rd")
 	else
-		return n.."th"
+		return n..StrUti("th")
 	end
 end
 end;
@@ -147,12 +160,37 @@ sStage = GAMESTATE:GetCurrentStage()
 end
 
 
+
+local at = Def.ActorFrame{
+
+};
+
+for i = 1,#SE do
+	at[#at+1] = LoadFont("Common Normal") .. {
+		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y*1.65;settext,SE[i];zoom,1;);
+		OnCommand=function(self)
+		if Time then
+			if Time < 3*60 then
+				self:diffuse({1,1,1,1})
+			elseif Time < 5*60 then
+				self:diffuse({1,1,1,1}):diffusebottomedge(Color("Red"))
+			else
+				self:diffuse({1,1,1,1}):diffusebottomedge(Color("Magenta"))
+			end
+		else 
+			self:diffuse({1,1,1,1}):diffusebottomedge(Color("Magenta"))
+		end
+		self:y(SCREEN_CENTER_Y*1.65+30+25*(i-1)):sleep(2.1+0.3*(i-1)):decelerate(1):y(SCREEN_CENTER_Y*1.6+25*(i-1))
+		end;
+	};
+end
+
 t[#t+1] =Def.ActorFrame{
 	InitCommand=cmd(diffusealpha,0);
 	OnCommand=cmd(sleep,1.773;decelerate,2;diffusealpha,1;sleep,1.259;linear,0.5;diffusealpha,0);
 	Def.Quad{
 		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y*1.5;zoomx,SCREEN_RIGHT;zoomy,SCREEN_CENTER_Y,0.7;diffuse,{0,0,0,0};fadetop,0.2);
-		OnCommand=cmd(diffusealpha,0.8);
+		OnCommand=cmd(diffusealpha,0.7);
 	};
 	LoadActor(Picdir)..{
 		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y*1.15-50;diffusealpha,0;zoom,0.5);
@@ -169,34 +207,19 @@ t[#t+1] =Def.ActorFrame{
 		OnCommand=cmd(decelerate,5;x,SCREEN_CENTER_X;);
 	};
 
-	LoadFont("Common Normal") .. {
-	InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y*1.65;settext,SE;zoom,1;);
-	OnCommand=function(self)
-	if Time then
-		if Time < 3*60 then
-		self:stopeffect():diffuse({1,1,1,1})
-		elseif Time < 5*60 then
-		self:stopeffect():diffuse({1,1,1,1}):diffusebottomedge(Color("Red"))
-		else
-		self:stopeffect():rainbow():diffusealpha(1);
-		end
-	else 
-		self:stopeffect():rainbow():diffusealpha(1);
-	end
-	self:zoom(1.1):sleep(1.773):decelerate(1):zoom(1)
-	end;
-	};
+	at;
+	
 	LoadFont("Common Normal")..{
 		Condition = GAMESTATE:IsHumanPlayer(PLAYER_1) and (not GAMESTATE:IsCourseMode()) ;
 		Text = "";
-		InitCommand=cmd(horizalign,left;x,30;y,SCREEN_CENTER_Y*1.7;diffuse,Color.Orange);
-		OnCommand=cmd(settext,"Step by\n"..GAMESTATE:GetCurrentSteps(PLAYER_1):GetAuthorCredit() or "???");
+		InitCommand=cmd(horizalign,left;x,0;y,SCREEN_CENTER_Y*1.7;diffuse,Color.Orange);
+		OnCommand=cmd(settext,"Step by\n"..GAMESTATE:GetCurrentSteps(PLAYER_1):GetAuthorCredit() or "???";decelerate,5;x,30);
 	};
 	LoadFont("Common Normal")..{
 		Condition = GAMESTATE:IsHumanPlayer(PLAYER_2) and (not GAMESTATE:IsCourseMode()) ;
 		Text = "";
-		InitCommand=cmd(horizalign,right;x,SCREEN_RIGHT-30;y,SCREEN_CENTER_Y*1.7;diffuse,Color.Orange);
-		OnCommand=cmd(settext,"Step by\n"..GAMESTATE:GetCurrentSteps(PLAYER_2):GetAuthorCredit() or "???");
+		InitCommand=cmd(horizalign,right;x,SCREEN_RIGHT;y,SCREEN_CENTER_Y*1.7;diffuse,Color.Orange);
+		OnCommand=cmd(settext,"Step by\n"..GAMESTATE:GetCurrentSteps(PLAYER_2):GetAuthorCredit() or "???";decelerate,5;x,SCREEN_RIGHT-30);
 	};
 };
 

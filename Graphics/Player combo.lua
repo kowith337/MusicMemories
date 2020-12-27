@@ -217,71 +217,51 @@ local t = Def.ActorFrame {};
         cf.Number:textglowmode("TextGlowMode_Stroke");
 		cf.MaxCombo:textglowmode("TextGlowMode_Stroke");
 
-		if param.FullComboW1 and EASTER()~="FOOL" then
-			cf.Number:diffuse( GameColor.Judgment["JudgmentLine_W1"] );
-			--cf.Number:strokecolor( GameColor.Judgment["JudgmentLine_W1"] );
-            cf.Number:textglowmode("TextGlowMode_Stroke");
-            cf.Number:strokecolor({1,1,1,1});
-			cf.Misses:visible(false);
-			cf.Number:visible(true);
-		elseif param.FullComboW2 and EASTER()~="FOOL" then
-			--cf.Number:diffuse( GameColor.Judgment["JudgmentLine_W2"] );
-			cf.Number:diffuse( GameColor.Judgment["JudgmentLine_W2"] );
-			cf.Number:strokecolor({1,1,1,1});
-            cf.Number:textglowmode("TextGlowMode_Stroke");
-			cf.Number:glowshift();
-			cf.Misses:visible(false);
-			cf.Number:visible(true);
-		elseif param.FullComboW3 and EASTER()~="FOOL" then
-			--cf.Number:diffuse( GameColor.Judgment["JudgmentLine_W3"] );
-			cf.Number:diffuse( GameColor.Judgment["JudgmentLine_W3"] );
-			cf.Number:strokecolor({1,1,1,1});
-            cf.Number:textglowmode("TextGlowMode_Stroke");
-			cf.Number:glowshift();
-			cf.Misses:visible(false);
-			cf.Number:visible(true);
-		elseif param.Combo then
-			-- instead, just diffuse to white for now. -aj
+
+		local SA = CurStageAward(player);
+
+		if string.find( SA,"W1") then
+			cf.Number:textglowmode("TextGlowMode_Stroke");
+            cf.Number:strokecolor(GameColor.Judgment["JudgmentLine_W1"]);
+		elseif string.find( SA,"W2") then
+			cf.Number:textglowmode("TextGlowMode_Stroke");
+            cf.Number:strokecolor(GameColor.Judgment["JudgmentLine_W2"]);
+		elseif string.find( SA,"W3") then
+			cf.Number:textglowmode("TextGlowMode_Stroke");
+            cf.Number:strokecolor(GameColor.Judgment["JudgmentLine_W3"]);
+		elseif string.find( SA,"Choke") then
+			cf.Number:textglowmode("TextGlowMode_Stroke");
+            cf.Number:strokecolor(GameColor.Judgment["JudgmentLine_W4"]);
+		elseif string.find( SA,"NoMiss") then
+			cf.Number:textglowmode("TextGlowMode_Stroke");
+            cf.Number:strokecolor(GameColor.Judgment["JudgmentLine_W5"]);
+		else
+			cf.Number:textglowmode("TextGlowMode_Stroke");
+            cf.Number:strokecolor({0,0,0,1});
+		end
+
+
+		if param.Combo then
 			cf.Number:diffuse({1,1,1,1});
-			cf.Number:strokecolor(Color("Stealth"));
-			cf.Number:stopeffect();
 			cf.Misses:visible(false);
 			cf.Number:visible(true);
 		else
 			cf.Misses:diffuse(color("#ff0000"));
-			cf.Misses:stopeffect();
-			cf.Number:stopeffect();
 			cf.Misses:visible(true);
 			cf.Number:visible(false);
 		end
 		
 		if iCombo > Grace and param.Combo then
 			Grace = iCombo
-		if param.FullComboW1 and EASTER()~="FOOL" then
-			cf.MaxCombo:rainbow();
-			cf.MaxCombo:strokecolor( GameColor.Judgment["JudgmentLine_W1"] );
-            cf.MaxCombo:textglowmode("TextGlowMode_Stroke");
-		elseif param.FullComboW2 and EASTER()~="FOOL" then
-			cf.MaxCombo:diffuse( GameColor.Judgment["JudgmentLine_W2"] );
-			cf.MaxCombo:diffusebottomedge({1,1,1,1});
-			cf.MaxCombo:strokecolor( GameColor.Judgment["JudgmentLine_W2"] );
-            cf.MaxCombo:textglowmode("TextGlowMode_Stroke");
-			cf.MaxCombo:glowshift();
-		elseif param.FullComboW3 and EASTER()~="FOOL" then
-			cf.MaxCombo:diffuse( GameColor.Judgment["JudgmentLine_W3"] );
-			cf.MaxCombo:diffusebottomedge({1,1,1,1});
-			cf.MaxCombo:strokecolor( GameColor.Judgment["JudgmentLine_W3"] );
-            cf.MaxCombo:textglowmode("TextGlowMode_Stroke");
-			cf.MaxCombo:glowshift();
-		elseif param.Combo then
-			-- instead, just diffuse to white for now. -aj
-			cf.MaxCombo:diffuse({1,1,1,1});
-			cf.MaxCombo:strokecolor(Color("Stealth"));
-			cf.MaxCombo:stopeffect();
-		else
-			cf.MaxCombo:diffuse(color("#ff0000"));
-			cf.MaxCombo:stopeffect();
-		end
+			if param.Combo then
+				-- instead, just diffuse to white for now. -aj
+				cf.MaxCombo:diffuse({1,1,1,1});
+				cf.MaxCombo:strokecolor(Color("Stealth"));
+				cf.MaxCombo:stopeffect();
+			else
+				cf.MaxCombo:diffuse(color("#ff0000"));
+				cf.MaxCombo:stopeffect();
+			end
 		end
 		-- Pulse
 		Pulse( cf.Number, param );
