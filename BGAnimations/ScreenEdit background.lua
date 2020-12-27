@@ -14,8 +14,12 @@ t[#t+1] = Def.ActorFrame {
 				local screenName = topScreen:GetName()
 				if screenName == "ScreenEdit" or screenName == "ScreenPractice" then
 					self:diffusealpha(0.95)
+					GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
+					GAMESTATE:UpdateDiscordScreenInfo(THEME:GetString('DiscordRich',"ScreenEdit") or "Editing...",GAMESTATE:GetCurrentSong():GetDisplayFullTitle(),1)
 				else
 					self:diffusealpha(0.65)
+					GAMESTATE:UpdateDiscordGameMode(GAMESTATE:GetCurrentGame():GetName())
+		GAMESTATE:UpdateDiscordScreenInfo(THEME:GetString('DiscordRich',"ScreenPractice") or "Practicing...",GAMESTATE:GetCurrentSong():GetDisplayFullTitle(),1)
 				end;
 			end;
 		end;

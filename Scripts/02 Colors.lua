@@ -3,7 +3,7 @@ Color = {
 -- Color Library
 -- These colors are pure swatch colors and are here purely to be used
 -- on demand without having to type color("stuff") or dig through
--- a palette to get the color you want.
+-- a palette to get the color you want.ดึึ
 	Black		=	color("0,0,0,1"),
 	White		=	color("1,1,1,1"),
 	Red			=	color("#FF2B44"),

@@ -38,6 +38,6 @@ t[#t+1] = LoadFont("Isla/_sov_monomon 24px")..{
 };
 
 
-t[#t+1] = LoadActor("Example_Actors/RollingNumbers");
 t[#t+1] = LoadActor("Example_Vector");
+t[#t+1] = LoadActor("BG_Color");
 return t;
