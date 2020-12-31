@@ -21,13 +21,13 @@ function LentSeng(num)
 		if num == 4 then
 			SOUND:PlayOnce(Pat.."readyOr.mp3");
 		elseif num == 3 then
-			SOUND:PlayOnce(Pat.."Tick.wav");
+			SOUND:PlayOnce(Pat.."count3s.ogg");
 		elseif num == 2 then
-			SOUND:PlayOnce(Pat.."Tick.wav");
+			SOUND:PlayOnce(Pat.."count2s.ogg");
 		elseif num == 1 then
-			SOUND:PlayOnce(Pat.."Tick.wav");
+			SOUND:PlayOnce(Pat.."count1s.ogg");
 		elseif num == 0 then
-			SOUND:PlayOnce(Pat.."Tick.wav");
+			SOUND:PlayOnce(Pat.."gos.ogg");
 		end
 end
 
