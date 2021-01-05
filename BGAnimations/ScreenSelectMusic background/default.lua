@@ -15,18 +15,18 @@ local t = Def.ActorFrame{
 						self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 					else
 						self:visible(false);
-						self:Load()
+						self:Load(nil)
 					end;
 					self:diffusealpha(scale(Nighty(),0,1,1,0.75))
 				else
 					self:visible(false);
-					self:Load()
+					self:Load(nil)
 				end
 			end;	
 		};
 	};
 
-	--[[Def.Sprite {
+	Def.Sprite {
 		InitCommand=cmd(x,0;y,0;diffusealpha,0.8);
 		CurrentSongChangedMessageCommand=cmd(finishtweening;sleep,0.32;queuecommand,"ModifySongBackground");
 		ModifySongBackgroundCommand=function(self)
