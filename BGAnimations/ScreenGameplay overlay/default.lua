@@ -36,10 +36,7 @@ if not OldVer then
 if TexttoDeBUG ~= "" then
 t[#t+1] = LoadActor("BeatMann");
 end
-t[#t+1] = LoadActor("Border");
-if TP.Battle.IsBattle  then
-t[#t+1] = LoadActor("Battle");
-end
+
 
 t[#t+1] = LoadActor("SoundReady");
 t[#t+1] = LoadActor("Time.lua")..{
@@ -108,6 +105,12 @@ t[#t+1] = LoadActor("FunStuff");
 if OP() or true then
 t[#t+1] = LoadActor("Niko");
 end
+
+t[#t+1] = LoadActor("Border");
+if TP.Battle.IsBattle  then
+t[#t+1] = LoadActor("Battle");
+end
+
 
 if (not TP.Battle.IsBattle) and not (GAMESTATE:GetPlayMode() == 'PlayMode_Rave' or GAMESTATE:GetPlayMode() == 'PlayMode_Battle') then
 	t[#t+1] = LoadActor("ButtomLifeLine/NewDefault.lua")..{

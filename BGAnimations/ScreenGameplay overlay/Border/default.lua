@@ -7,24 +7,6 @@ local DP={0,0};
 local t = Def.ActorFrame{
 	OnCommand=cmd(y,-10);
 };
-t[#t+1] = Def.Quad{
-InitCommand=cmd(CenterX;y,35.5;zoomx,SCREEN_RIGHT;zoomy,(1/6)*SCREEN_BOTTOM;diffusealpha,0.1);
-OnCommand=cmd(queuecommand,"Nep");
-		CurrentSongChangedMessageCommand=cmd(queuecommand,"Nep");
-		NepCommand=function(self)
-
-		if GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-			self:diffuserightedge(Diff2Cl(GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty(),0.35))
-			self:diffuseleftedge(Diff2Cl(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty(),0.35))
-		elseif GAMESTATE:IsPlayerEnabled(PLAYER_1) then
-		self:diffuse(Diff2Cl(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty(),0.35))
-		elseif GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-		self:diffuse(Diff2Cl(GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty(),0.35))
-		end
-		self:diffusetopedge({0,0,0,1})
-		end;
-GETOUTOFGAMESMMessageCommand=cmd(sleep,math.random(0,10)/10;accelerate,1;zoomx,0);
-};
 
 
 t[#t+1] = Def.ActorFrame{

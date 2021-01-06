@@ -1,9 +1,0 @@
-	Def.Quad{
-		OnCommand=cmd(horizalign,left;zoomx,35;zoomy,23.75;diffuse,clmain);
-		BEATMessageCommand=function(self,Seri)
-			--self:finishtweening()
-			self:zoomx(35);
-			self:decelerate(Seri.len*0.8);
-			self:zoomx(0);
-		end;
-	};
