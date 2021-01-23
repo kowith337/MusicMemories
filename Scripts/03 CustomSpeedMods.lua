@@ -412,6 +412,8 @@ function ArbitrarySpeedMods()
 				soptions:AMod(val.speed)
 				coptions:AMod(val.speed)
 			end
+
+			SCREENMAN:SystemMessage("\n\n\n\n\n"..string.format("Speed>>%s %d",val.mode,val.speed))
 		end,
 		NotifyOfSelection= function(self, pn, choice)
 			-- Adjust for the status elements

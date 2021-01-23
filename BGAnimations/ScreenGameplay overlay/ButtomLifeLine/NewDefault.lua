@@ -607,18 +607,23 @@ local t = Def.ActorFrame{
                 --SM("\n\n\n\n\n\n\nBOOOOOOOOOOOOM")
                 if SA then
 
-                    local BE = false;
+                    local BE = 6;
                     for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-                        if string.match( CurStageAward(pn),"W2") or string.match( CurStageAward(pn),"W1") then
-                            BE = true;
-                            break
+                        if  string.match( CurStageAward(pn),"W1") then
+                            BE = math.min(BE,1);
+                        elseif  string.match( CurStageAward(pn),"W2") then
+                            BE = math.min(BE,2);
+                        elseif  string.match( CurStageAward(pn),"W3") then
+                            BE = math.min(BE,3);
+                        elseif  string.match( CurStageAward(pn),"Choke") then
+                            BE = math.min(BE,4);
+                        elseif  string.match( CurStageAward(pn),"NoMiss") then
+                            BE = math.min(BE,5);
                         end
                     end
                     
-                    if BE then
-                        SOUND:PlayOnce(THEME:GetPathS("Fc","WOW") );
-                    else
-                        SOUND:PlayOnce(THEME:GetPathS("Fc","Normal") );
+                    if BE <= 5 then
+                        SOUND:PlayOnce(THEME:GetPathS("Fc","W"..tostring(BE)) );
                     end
 
                     
