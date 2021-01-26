@@ -1,9 +1,14 @@
 
 
+local path = THEME:GetCurrentThemeDirectory().."BGAnimations/ScreenGameplay decorations/Stageaward/";
+
 local Color_SA = {}
 local TitleText = {}
 local SubText = {}
 local YEP = {}
+
+local style = GAMESTATE:GetCurrentStyle()
+local cols = style:ColumnsPerPlayer()
 
 local function Parti(am)
     local P = Def.ActorFrame{}
@@ -43,23 +48,23 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
                 
                 if string.find( SA,"W1") then
                     Color_SA[pn] = GameColor.Judgment.JudgmentLine_W1
-                    TitleText[pn] = "AF"
+                    TitleText[pn] = "W1"
                 elseif string.find( SA,"W2") then
                     Color_SA[pn] = GameColor.Judgment.JudgmentLine_W2
-                    TitleText[pn] = "AP"
+                    TitleText[pn] = "W2"
                 elseif string.find( SA,"W3") then
                     Color_SA[pn] = GameColor.Judgment.JudgmentLine_W3
-                    TitleText[pn] = "FC"
+                    TitleText[pn] = "W3"
                 elseif string.find( SA,"Choke") then
                     Color_SA[pn] = GameColor.Judgment.JudgmentLine_W4
-                    TitleText[pn] = ":3"
+                    TitleText[pn] = "W4"
                 elseif string.find( SA,"NoMiss") then
                     Color_SA[pn] = GameColor.Judgment.JudgmentLine_W5
-                    TitleText[pn] = "NM"
+                    TitleText[pn] = "W5"
                 end
+
                 SubText[pn] = THEME:GetString("StageAward",ToEnumShortString(SA))
                 YEP[pn] = true;         
-                
                 
 
                 self:queuecommand("EXE");
@@ -80,16 +85,16 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
             end;
         };
         Def.Quad{
-            InitCommand=cmd(zoomx,64*5;zoomy,SCREEN_BOTTOM*1.2;fadeleft,0.1;faderight,0.1;croptop,1;diffuse,{1,1,1,0.4};);
+            InitCommand=cmd(zoomx,cols*50+20;zoomy,SCREEN_BOTTOM*1.2;fadeleft,0.1;faderight,0.1;croptop,1;diffuse,{1,1,1,0.4};);
             EXECommand=cmd(decelerate,0.4;croptop,0;sleep,0.1;decelerate,0.4;cropbottom,1);
         };
         Def.Quad{
-            InitCommand=cmd(zoomx,64*5;zoomy,SCREEN_BOTTOM*1.2;fadeleft,0.1;faderight,0.1;croptop,1;diffusealpha,0.7);
+            InitCommand=cmd(zoomx,cols*50+20;zoomy,SCREEN_BOTTOM*1.2;fadeleft,0.1;faderight,0.1;croptop,1;diffusealpha,0.7);
             EXECommand=cmd(diffuse,Color_SA[pn];sleep,0.5;decelerate,0.1;croptop,0;decelerate,0.4;zoomx,64*5.5;diffusealpha,0.4;fadeleft,0.12;faderight,0.12;);
         };
-        LoadFont("Common Large")..{
-            InitCommand=cmd(y,-150;diffusealpha,0;shadowlength,2;skewx,-0.2);
-            EXECommand=cmd(settext,TitleText[pn];diffuse,Color_SA[pn];diffusealpha,0;sleep,0.5;decelerate,0.2;y,-60;diffusealpha,1);
+        Def.Sprite{
+            InitCommand=cmd(y,-150;diffusealpha,0;zoom,0.25);
+            EXECommand=cmd(Load,path.."FC"..TitleText[pn]..".png";diffusealpha,0;sleep,0.5;decelerate,0.2;y,-60;diffusealpha,1);
         };
         LoadFont("Common Normal")..{
             InitCommand=cmd(y,70;diffusealpha,0;shadowlength,1;);
