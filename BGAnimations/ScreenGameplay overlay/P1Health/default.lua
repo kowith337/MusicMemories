@@ -28,7 +28,7 @@ local t = Def.ActorFrame{
 				else
 					if life == 1 then
 						self:GetChildren()["lifeMax"]:stoptweening():decelerate(0.5):diffusealpha(1)
-						self:GetChildren()["lifeBG"]:stoptweening():decelerate(0.5):diffusealpha(0.1)
+						self:GetChildren()["lifeBG"]:stoptweening():decelerate(0.5):diffusealpha(1)
 						self:GetChildren()["lifeMaxUp"]:stoptweening():decelerate(0.5):diffusealpha(1)
 						SCREENMAN:GetTopScreen():GetChild('LifeP1'):stoptweening():decelerate(0.5):diffusealpha(0)
 						isHot = true;
@@ -37,13 +37,16 @@ local t = Def.ActorFrame{
 
 			end
 		end;
-		Def.Quad{
+		Def.ActorFrame{
 			Name = "lifeBG";
-			InitCommand=cmd(y,SCREEN_CENTER_Y-210.25+22;horizalign,left;x,PX;zoomy,15;zoomx,248;diffusealpha,0.2);
+			Def.Quad{
+				InitCommand=cmd(y,SCREEN_CENTER_Y-210.25+22;horizalign,left;x,PX;zoomy,15;zoomx,248;diffusealpha,1);
+				OnCommand=cmd(effectclock,"beat";diffuseramp;effectcolor1,{1,1,1,0.7};effectcolor2,{1,1,1,0.2};effectperiod,1/16);
+			};
 		};
 		LoadActor("Life_Max2.png")..{
 			Name = "lifeMax";
-			InitCommand=cmd(y,SCREEN_CENTER_Y-210.25+22;horizalign,left;x,PX;zoomy,15/128;customtexturerect,0,0.9,0.9,1;texcoordvelocity,0,0.2);
+			InitCommand=cmd(y,SCREEN_CENTER_Y-210.25+22;horizalign,left;x,PX;zoomy,15/128;effectclock,"beat";customtexturerect,0,0.9,0.9,1;texcoordvelocity,0,0.2);
 			OnCommand=cmd(blend,"BlendMode_WeightedMultiply");
 		};
 		LoadActor("Life_MaxUp.png")..{
