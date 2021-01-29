@@ -71,7 +71,6 @@ return Def.ActorFrame{
         end
 
         if not FILEMAN:DoesFileExist(PathA..PathB..PathC) then
-            printf("File NOT FOUND :(")
             return;
         end
 
