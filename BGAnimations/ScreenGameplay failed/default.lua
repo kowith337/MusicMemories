@@ -58,8 +58,7 @@ local InputHandler = function( event )
 
 end
 
-local FailType = math.random(1,11)
---FailType = 11
+local FailType = math.random(1,15)
 local Ror = 2.5
 local Hoold = 5
 
@@ -96,6 +95,9 @@ elseif FailType == 10 then
 elseif FailType == 11 then
 	t[#t+1]=LoadActor("DeadBody");
 	Ror = 1.5
+elseif FailType >= 12 and FailType <= 15 then
+	t[#t+1]=LoadActor("Pump");
+	Ror = 4
 end
 
 

@@ -36,8 +36,9 @@ local function OPFil()
     --GET INFORMATION
     local files = FILEMAN:GetDirListing(GAMESTATE:GetCurrentSong():GetSongDir())
     local STUFF;
-    
+        
         for file in ivalues(files) do
+            
             if file:find(".+%.[sS][sS][cC]$") then
                 -- Finding a .ssc file is preferable.
                 -- If we find one, stop looking.
@@ -49,9 +50,12 @@ local function OPFil()
                 -- there might still be a .ssc file waiting.
                 fileN = file
                 fileT = "sm"
+            elseif file:find(".+%.[dD][wW][iI]$") then
+                fileN = file
+                fileT = "dwi"
             end
         end
-        if (not (fileN and fileT)) or fileT =="dwi" then return nil 
+        if (not (fileN and fileT)) then return nil 
         else return {fileN,fileT} end
     end
 
@@ -59,9 +63,12 @@ local function GetCh(x)
 
     if x == nil then return nil; end
     
+    
+
     local fileN=x[1];
     local fileT=x[2];
     local MSP = {"",""};
+    
     -- create a generic RageFile that we'll use to read the contents
     -- of the desired .ssc or .sm file
     local f = RageFileUtil.CreateRageFile()
@@ -200,6 +207,14 @@ local function GetCh(x)
                     AI = AI +1
 
                 end
+            elseif fileT == "dwi" then
+                
+                -- for chart in STUFF:gmatch("#NOTES[^;]*") do
+                -- end
+                --Meow
+                
+                
+
 
             end
     end
